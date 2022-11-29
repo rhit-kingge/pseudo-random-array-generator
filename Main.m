@@ -25,15 +25,22 @@ gridx = 20;
 gridy = 20;
 current_best = zeros(gridx,gridy);
 empty_tiles = gridx*gridy;
-tile1 = 1;
-tile2 = 2;
-tile3 = 3;
+% tile1 = 1;
+% tile2 = 2;
+% tile3 = 3;
 
-each_area = empty_tiles/3;
+tile1 = Tile(1,1,1);
+tile2 = Tile(2,2,2);
+tile3 = Tile(3,3,3);
 
-number_1 = round(each_area/(tile1^2));
-number_2 = round(each_area/(tile2^2));
-number_3 = round(each_area/(tile3^2));
+% each_area = empty_tiles/3;
+
+% number_1 = round(each_area/(tile1^2));
+% number_2 = round(each_area/(tile2^2));
+% number_3 = round(each_area/(tile3^2));
+number_1 = round(empty_tiles/3/tile1.area^2);
+number_2 = round(empty_tiles/3/tile2.area^2);
+number_3 = round(empty_tiles/3/tile3.area^2);
 %I think the approach should be to place all the large tiles first, then go
 %down in size for better distribution. If we assume even distribution,
 %Maybe they most 
