@@ -20,6 +20,7 @@ clc; clear all;
 %diagonal down-right. This will also mean larger plaques should only check
 %indexes in a smaller range to avoid indexing errors.
 
+
 grid_width = 20;
 grid_height = 20;
 current_best = zeros(grid_height,grid_width);
