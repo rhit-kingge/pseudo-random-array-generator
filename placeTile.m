@@ -1,6 +1,7 @@
 function obj = placeTile(tile, ideal_area, plaque, max_attempts)
 
 
+
 area_placed = 0;
 current_attempt = 0;
 [plaque_height, plaque_width] = size(plaque);

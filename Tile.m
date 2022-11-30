@@ -23,7 +23,6 @@ classdef Tile
             obj.area = width*height;
         end
         
-        
     end
 end
 
