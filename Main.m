@@ -6,7 +6,6 @@ clc; clear all;
 % D = 0.2:0.01:0.5;
 % R2 = -1.055*D./(n-1);
 
-
 %The process here is to create an array that represents either one tile in
 %the pattern or the whole plaque. Each square in the 2D array represents a
 %square of 0.2mm currently (easier to downgrade later if needed). The loop
@@ -20,7 +19,6 @@ clc; clear all;
 %will choose an index and check the squares to the right, below, and
 %diagonal down-right. This will also mean larger plaques should only check
 %indexes in a smaller range to avoid indexing errors.
-
 
 grid_width = 20;
 grid_height = 20;
