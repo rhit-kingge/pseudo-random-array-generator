@@ -36,8 +36,8 @@ prev_merit = 10000;
 
 for generated_plaques = 1:2
     plaque = zeros(grid_height,grid_width);
-    plaque = placeTile(tile3, target3, plaque, 10000);
-    plaque = placeTile(tile2, target2, plaque, 10000);
+    plaque = tile3.placelens(plaque, target3, 1000);
+    plaque = tile2.place(plaque, target2, 1000);
 
     for x = 2:grid_width-1
         for y = 2:grid_height-1
@@ -57,4 +57,4 @@ for generated_plaques = 1:2
 end
 
 
-imagesc(current_best);
+imagesc(plaque);
