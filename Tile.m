@@ -23,9 +23,9 @@ classdef Tile
             obj.radius = radius;
             obj.area = width*height;
             if obj.area == 1
-                buffer = 0;
+                obj.buffer = 0;
             else
-                buffer = 1;
+                obj.buffer = 1;
             end
         end
 
@@ -51,8 +51,8 @@ classdef Tile
                     continue;
                 end
         
-                for y = posy - this.buffer:posy + this.height
-                    for x = posx - this.buffer:posx + this.width
+                for y = posy - this.buffer:posy + this.height + this.buffer - 1
+                    for x = posx - this.buffer:posx + this.width + this.buffer - 1
                         if obj(y,x) == this.radius
                             free_space = false;
                         end
