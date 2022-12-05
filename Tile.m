@@ -1,48 +1,43 @@
 classdef Tile
-    %TILE Summary of this class goes here
-    %   Detailed explanation goes here
-    
+
     properties
         width
         height
-        radius
+        xFocus
+        yFocus
+        name
         area
-        buffer
     end
 
-    %potential tracing method: Code sends rays through random indices of
-    %the array, then activates a method of the intercepted tile. Because
-    %the tiles have different sizes an xheight and yheight can be generated
-    %for the ray, then because the light is collimated it will focus at the
-    %focal point of the lens, allowing us to calculate an output angle.
-
     methods
-        function obj = Tile(width, height, radius)
+        function obj = Tile(width, height, xRadius, yRadius, name)
             obj.width = width;
             obj.height = height;
-            obj.radius = radius;
+            obj.name = name;
             obj.area = width*height;
-            if obj.area == 1
-                obj.buffer = 0;
-            else
-                obj.buffer = 1;
-            end
+            xFocus = xRadius/(1-1.4936);
+            yFocus = yRadius/(1-1.4936);
         end
 
-        function obj = placelens(this, plaque, idealarea, maxattempts)
+        function [newPlaque, newRays]  = placelens(this, plaque, idealarea, maxattempts, rays)
+        %setup of variables
         area_placed = 0;
         current_attempt = 0;
-        [plaque_height, plaque_width] = size(plaque);
-        obj = plaque;
+        newRays = rays;
+        newPlaque = plaque;
+        [plaque_height, plaque_width] = size(newPlaque);
+        
             while area_placed < idealarea && current_attempt < maxattempts
                 current_attempt = current_attempt + 1;
                 posx = randi(plaque_width-this.width-1,1) + 1;
                 posy = randi(plaque_height-this.height-1,1) + 1;
                 free_space = true;
-        
+
+                %This loop checks the generated location to make sure no
+                %other lens is already placed there
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
-                        if obj(y,x) ~= 0
+                        if newPlaque(y,x) ~= 0
                             free_space = false;
                         end
                     end
@@ -50,11 +45,16 @@ classdef Tile
                 if ~free_space
                     continue;
                 end
-        
-                for y = posy - this.buffer:posy + this.height + this.buffer - 1
-                    for x = posx - this.buffer:posx + this.width + this.buffer - 1
-                        if obj(y,x) == this.radius
-                            free_space = false;
+                
+                %If the space is empty and the tile is not the smallest tile, this checks the adjacent
+                %spaces to make sure the tile is not being placed
+                %by a matching tile
+                if this.area > 1
+                    for y = posy - 1:posy + this.height
+                        for x = posx - 1:posx + this.width
+                            if newPlaque(y,x) == this.name
+                                free_space = false;
+                            end
                         end
                     end
                 end
@@ -62,12 +62,22 @@ classdef Tile
                     continue;
                 end
         
+
+                %If the space is empty and there are no like tiles next to
+                %the space, this loop places the tile. The next line
+                %updates the area taken up by the current kind of lens for
+                %the distribution target.
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
-                        obj(y,x) = this.radius;
+                        newPlaque(y,x) = this.name;
                     end
                 end
-                area_placed = area_placed + this.area;        
+                area_placed = area_placed + this.area;
+
+                xCenter = posy + this.width/2;
+                yCenter = posx + this.height/2;
+                
+
             end
         end
     end

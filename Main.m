@@ -19,12 +19,12 @@ clc; clear all;
 grid_width = 20;
 grid_height = 20;
 current_best = zeros(grid_height,grid_width);
-rays = zeros(grid_width, grid_height);
+rays = zeros(grid_width*grid_height*5);
 empty_tiles = grid_width*grid_height;
 
-tile1 = Tile(1,1,1);
-tile2 = Tile(2,2,2);
-tile3 = Tile(3,3,3);
+tile1 = Tile(1,1,1,1,1);
+tile2 = Tile(2,2,2,2,2);
+tile3 = Tile(3,3,3,3,3);
 target1 = round(empty_tiles/3);
 target2 = round(empty_tiles/3);
 target3 = round(empty_tiles/3);
@@ -33,10 +33,10 @@ prev_merit = 10000;
 for generated_plaques = 1:2
     plaque = zeros(grid_height,grid_width);
 
-    plaque = tile3.placelens(plaque, target3, 1000);
-    %[plaque rays] = tile3.placelens(plaque, target3, 1000, rays);
-    plaque = tile2.placelens(plaque, target2, 1000);
-    plaque = tile1.placelens(plaque, 175, 100000);
+    %plaque = tile3.placelens(plaque, target3, 1000);
+    [plaque, rays] = tile3.placelens(plaque, target3, 1000, rays);
+    %plaque = tile2.placelens(plaque, target2, 1000);
+    %plaque = tile1.placelens(plaque, 175, 100000);
 
 
     %Merit function
