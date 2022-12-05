@@ -15,15 +15,11 @@ clc; clear all;
 %place the tile until a desired number of that tile or until a set number of attempts.
 %It does this first with the largest tile, then the second largest, then it
 %fills in the rest of the gaps with the smallest tile.
-%For checking the positioning, to work with MATLAB the code should check
-%from the top left corner. So for example a tile that takes up 2x2 squares
-%will choose an index and check the squares to the right, below, and
-%diagonal down-right. This will also mean larger plaques should only check
-%indexes in a smaller range to avoid indexing errors.
 
 grid_width = 20;
 grid_height = 20;
 current_best = zeros(grid_height,grid_width);
+rays = zeros(grid_width, grid_height);
 empty_tiles = grid_width*grid_height;
 
 tile1 = Tile(1,1,1);
@@ -36,16 +32,12 @@ prev_merit = 10000;
 
 for generated_plaques = 1:2
     plaque = zeros(grid_height,grid_width);
-    plaque = tile3.placelens(plaque, target3, 1000);
-    plaque = tile2.placelens(plaque, target2, 1000);
 
-    for x = 2:grid_width-1
-        for y = 2:grid_height-1
-            if plaque(x,y) == 0
-                plaque(x,y) = tile1.radius;
-            end
-        end
-    end
+    plaque = tile3.placelens(plaque, target3, 1000);
+    %[plaque rays] = tile3.placelens(plaque, target3, 1000, rays);
+    plaque = tile2.placelens(plaque, target2, 1000);
+    plaque = tile1.placelens(plaque, 175, 100000);
+
 
     %Merit function
 %     merit = sqrt((target3-n3)^2+(target2-n2)^2);
