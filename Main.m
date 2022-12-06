@@ -19,7 +19,7 @@ clc; clear all;
 grid_width = 20;
 grid_height = 20;
 current_best = zeros(grid_height,grid_width);
-rays = zeros(grid_width*grid_height*5);
+rays = Ray.empty;
 empty_tiles = grid_width*grid_height;
 
 tile1 = Tile(1,1,1,1,1);
