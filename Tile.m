@@ -76,7 +76,7 @@ classdef Tile
 
                 xCenter = posy + this.width/2;
                 yCenter = posx + this.height/2;
-                
+                ray1 = Ray(xCenter, yCenter, 0, 0);
 
             end
         end
