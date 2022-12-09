@@ -48,14 +48,25 @@ for generated_plaques = 1:1
 
 end
 
+% figure()
+% imagesc(plaque);
+% hold on;
+% for n = 1:length(rays)
+%     plot(rays(n).xOrigin,rays(n).yOrigin,'r*')
+% end
 
-imagesc(plaque);
-hold on;
+% figure()
+% hold on;
+% stepsize = 180/length(rays);
+% 
+% for n = 1:length(rays)
+%     plot(rays(n).xAngle,"r*")
+% end
+
+xAngles = zeros(size(rays));
+yAngles = zeros(size(rays));
 for n = 1:length(rays)
-    plot(rays(n).xOrigin,rays(n).yOrigin,'r*')
-%     plot(ray.xOrigin,ray.yOrigin,'r*')
-%     plot(ray.xOrigin,ray.yOrigin,'r*')
-%     plot(ray.xOrigin,ray.yOrigin,'r*')
-%     plot(ray.xOrigin,ray.yOrigin,'r*')
-%     plot(ray.lens_position(1),ray.lens_position(2),'r*')
+    xAngles(n) = rays(n).xAngle*180/pi;
+    yAngles(n) = rays(n).yAngle*180/pi;
 end
+histogram(xAngles, 181, 'BinLimits', [-90, 90]);
