@@ -30,7 +30,7 @@ target2 = round(empty_tiles/3);
 target3 = round(empty_tiles/3);
 prev_merit = 10000;
 
-for generated_plaques = 1:2
+for generated_plaques = 1:1
     plaque = zeros(grid_height,grid_width);
 
     %plaque = tile3.placelens(plaque, target3, 1000);
