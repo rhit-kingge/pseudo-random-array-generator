@@ -62,19 +62,19 @@ classdef Tile
                     continue;
                 end
                 
-                xCenter = posy + this.width/2;
-                yCenter = posx + this.height/2;
+                xCenter = posx + (this.width-1)/2;
+                yCenter = posy + (this.height-1)/2;
                 rayCounter = 0;
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
                         newPlaque(y,x) = this.name;
                         rayCounter = rayCounter + 1;
 
-                        centerRay = Ray(x + 0.5,y + 0.5, -atan((x - xCenter + 0.5)/this.xFocus), -atan((y - yCenter + 0.5)/this.yFocus), [x y]);
-                        leftRay = Ray(x, y + 0.5, -atan((x - xCenter)/this.xFocus), -atan((y - yCenter + 0.5)/this.yFocus), [x y]);
-                        rightRay = Ray(x+1, y + .5, -atan((x + 1 - xCenter)/this.xFocus), -atan((y - yCenter + 0.5)/this.yFocus), [x y]);
-                        bottomRay = Ray(x + 0.5, y, -atan((x - xCenter + 0.5)/this.xFocus), -atan((y - yCenter)/this.yFocus), [x y]);
-                        topRay = Ray(x + 0.5, y+1, -atan((x - xCenter + 0.5)/this.xFocus), -atan((y - yCenter + 1)/this.yFocus), [x y]);
+                        centerRay = Ray(x, y, atan((x - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
+                        leftRay = Ray(x - 0.5, y, atan((x - 0.5 - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
+                        rightRay = Ray(x + 0.5, y, atan((x + 0.5 - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
+                        bottomRay = Ray(x, y - 0.5, atan((x - xCenter)/this.xFocus), atan((y - 0.5 - yCenter)/this.yFocus), [xCenter yCenter]);
+                        topRay = Ray(x, y + 0.5, atan((x - xCenter)/this.xFocus), atan((y - yCenter + 0.5)/this.yFocus), [xCenter yCenter]);
 
                         newRays(end + 1) = centerRay;
                         newRays(end + 1) = leftRay;

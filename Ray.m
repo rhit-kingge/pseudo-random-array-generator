@@ -5,16 +5,16 @@ classdef Ray
         yOrigin
         xAngle
         yAngle
-        lens_position
+        lens_center
     end
     
     methods
-        function obj = Ray(xOrigin, yOrigin, xAngle, yAngle, corner)
+        function obj = Ray(xOrigin, yOrigin, xAngle, yAngle, center)
             obj.xOrigin = xOrigin;
             obj.yOrigin = yOrigin;
             obj.xAngle = xAngle;
             obj.yAngle = yAngle;
-            obj.lens_position = corner;
+            obj.lens_center = center;
         end
         
     end

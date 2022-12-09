@@ -24,7 +24,7 @@ empty_tiles = grid_width*grid_height;
 
 tile1 = Tile(1,1,1,1,1);
 tile2 = Tile(2,2,2,2,2);
-tile3 = Tile(3,3,3,3,3);
+tile3 = Tile(3,4,3,3,3);
 target1 = round(empty_tiles/3);
 target2 = round(empty_tiles/3);
 target3 = round(empty_tiles/3);
