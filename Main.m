@@ -16,8 +16,8 @@ clc; clear all;
 %It does this first with the largest tile, then the second largest, then it
 %fills in the rest of the gaps with the smallest tile.
 
-grid_width = 20;
-grid_height = 20;
+grid_width = 15;
+grid_height = 15;
 current_best = zeros(grid_height,grid_width);
 rays = Ray.empty;
 empty_tiles = grid_width*grid_height;
@@ -50,3 +50,12 @@ end
 
 
 imagesc(plaque);
+hold on;
+for n = 1:length(rays)
+    plot(rays(n).xOrigin,rays(n).yOrigin,'r*')
+%     plot(ray.xOrigin,ray.yOrigin,'r*')
+%     plot(ray.xOrigin,ray.yOrigin,'r*')
+%     plot(ray.xOrigin,ray.yOrigin,'r*')
+%     plot(ray.xOrigin,ray.yOrigin,'r*')
+%     plot(ray.lens_position(1),ray.lens_position(2),'r*')
+end

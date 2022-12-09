@@ -76,19 +76,17 @@ classdef Tile
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
                         newPlaque(y,x) = this.name;
-                        %Ray 1 is the ray in the center of the lens, it
-                        %occurs at the center of the lens, which is already
-                        %calculated
-                        ray1 = Ray(posx + 0.5,posy + 0.5, -atan((posx - xCenter + 0.5)/this.xFocus), -atan((posy - yCenter + 0.5)/this.yFocus));
-                        %Rays 2 and 3 are the (-x,0) and (x,0) positions,
-                        %respectively. They occur at 
-                        ray2 = Ray(posx, posy + 0.5, -atan((posx - xCenter)/this.xFocus), -atan((posy - yCenter + 0.5)/this.yFocus));
-                        ray3 = Ray(posx + 1,posy + .5, -atan((posx + 1 - xCenter)/this.xFocus), -atan((posy - yCenter + 0.5)/this.yFocus));
-                        %Rays 4 and 5 are the (0,-y) and (0,y) positions,
-                        %respectively
-                        ray4 = Ray(posx + 0.5, posy, -atan((posx - xCenter + 0.5)/this.xFocus), -atan((posy - yCenter)/this.yFocus));
-                        ray5 = Ray(posx + 0.5, posy + 1, -atan((posx - xCenter + 0.5)/this.xFocus), -atan((posy - yCenter + 1)/this.yFocus));
-                        newRays = [newRays, ray1, ray2, ray3, ray4, ray5];
+
+                        centerRay = Ray(x + 0.5,y + 0.5, -atan((x - xCenter + 0.5)/this.xFocus), -atan((y - yCenter + 0.5)/this.yFocus), [x y]);
+                        newRays(end + 1) = centerRay;
+% 
+%                         leftRay = Ray(x, y + 0.5, -atan((x - xCenter)/this.xFocus), -atan((y - yCenter + 0.5)/this.yFocus), [x y]);
+%                         rightRay = Ray(x, y - .5, -atan((x + 1 - xCenter)/this.xFocus), -atan((y - yCenter + 0.5)/this.yFocus), [x y]);
+% 
+%                         bottomRay = Ray(x + 0.5, y+1, -atan((x - xCenter + 0.5)/this.xFocus), -atan((y - yCenter)/this.yFocus), [x y]);
+%                         topRay = Ray(x + 0.5, y, -atan((x - xCenter + 0.5)/this.xFocus), -atan((y - yCenter + 1)/this.yFocus), [x y]);
+%                         
+%                         newRays = [newRays, centerRay, leftRay, rightRay, bottomRay, topRay];
                     end
                 end
                 area_placed = area_placed + this.area;
