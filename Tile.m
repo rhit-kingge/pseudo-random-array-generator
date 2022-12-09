@@ -15,8 +15,8 @@ classdef Tile
             obj.height = height;
             obj.name = name;
             obj.area = width*height;
-            xFocus = xRadius/(1-1.4936);
-            yFocus = yRadius/(1-1.4936);
+            obj.xFocus = xRadius/(1.4936-1);
+            obj.yFocus = yRadius/(1.4936-1);
         end
 
         function [newPlaque, newRays]  = placelens(this, plaque, idealarea, maxattempts, rays)
@@ -67,16 +67,31 @@ classdef Tile
                 %the space, this loop places the tile. The next line
                 %updates the area taken up by the current kind of lens for
                 %the distribution target.
+                xCenter = posy + this.width/2;
+                yCenter = posx + this.height/2;
+                %This is the loop that actually changes each square, so for
+                %the 3x3 lens it goes through all 9 spaces. Here is where
+                %the rays should be made, since they shhould be made for
+                %every space
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
                         newPlaque(y,x) = this.name;
+                        %Ray 1 is the ray in the center of the lens, it
+                        %occurs at the center of the lens, which is already
+                        %calculated
+                        ray1 = Ray(posx + 0.5,posy + 0.5, -atan((posx - xCenter + 0.5)/this.xFocus), -atan((posy - yCenter + 0.5)/this.yFocus));
+                        %Rays 2 and 3 are the (-x,0) and (x,0) positions,
+                        %respectively. They occur at 
+                        ray2 = Ray(posx, posy + 0.5, -atan((posx - xCenter)/this.xFocus), -atan((posy - yCenter + 0.5)/this.yFocus));
+                        ray3 = Ray(posx + 1,posy + .5, -atan((posx + 1 - xCenter)/this.xFocus), -atan((posy - yCenter + 0.5)/this.yFocus));
+                        %Rays 4 and 5 are the (0,-y) and (0,y) positions,
+                        %respectively
+                        ray4 = Ray(posx + 0.5, posy, -atan((posx - xCenter + 0.5)/this.xFocus), -atan((posy - yCenter)/this.yFocus));
+                        ray5 = Ray(posx + 0.5, posy + 1, -atan((posx - xCenter + 0.5)/this.xFocus), -atan((posy - yCenter + 1)/this.yFocus));
+                        newRays = [newRays, ray1, ray2, ray3, ray4, ray5];
                     end
                 end
                 area_placed = area_placed + this.area;
-
-                xCenter = posy + this.width/2;
-                yCenter = posx + this.height/2;
-                ray1 = Ray(xCenter, yCenter, 0, 0);
 
             end
         end

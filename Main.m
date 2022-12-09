@@ -1,10 +1,10 @@
 clc; clear all;
 
-% n = 1.4926;     %Refractive index of PMMA according to refractiveindex.info
-% theta = 45*pi/180;  %Output angle, technically working in reverse
-% NA = n*sin(-theta);      %The numerical aperture of a PMMA lens with a 45 degree output
-% D = 0.2:0.01:0.5;
-% R2 = -1.055*D./(n-1);
+ n = 1.4926;     %Refractive index of PMMA according to refractiveindex.info
+ theta = 45*pi/180;  %Output angle, technically working in reverse
+ NA = n*sin(-theta);      %The numerical aperture of a PMMA lens with a 45 degree output
+ D = 1.5;
+ R2 = -1.055*D/(n-1);
 
 
 %The process here is to create an array that represents either one tile in
@@ -19,7 +19,7 @@ clc; clear all;
 grid_width = 20;
 grid_height = 20;
 current_best = zeros(grid_height,grid_width);
-rays = zeros(grid_width*grid_height*5);
+rays = Ray.empty;
 empty_tiles = grid_width*grid_height;
 
 tile1 = Tile(1,1,1,1,1);
