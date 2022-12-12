@@ -10,13 +10,17 @@ classdef Tile
     end
 
     methods
-        function obj = Tile(width, height, xRadius, yRadius, name)
+        function obj = Tile(width, height, xSpread, ySpread, name)
             obj.width = width;
             obj.height = height;
             obj.name = name;
             obj.area = width*height;
-            obj.xFocus = xRadius/(1.4936-1);
-            obj.yFocus = yRadius/(1.4936-1);
+%             xNA = 1.4926*sin(xSpread*pi/180);
+%             yNA = 1.4926*sin(ySpread*pi/180);
+%             xR = xNA*width/(1.4926 - 1);
+%             yR = yNA*width/(1.4926 - 1);
+            obj.xFocus = width/2/tan(xSpread*pi/180);
+            obj.yFocus = height/2/tan(ySpread*pi/180);
         end
 
         function [newPlaque, newRays]  = placelens(this, plaque, idealarea, maxattempts, rays)
@@ -68,7 +72,7 @@ classdef Tile
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
                         newPlaque(y,x) = this.name;
-                        rayCounter = rayCounter + 1;
+                        
 
                         centerRay = Ray(x, y, atan((x - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
                         leftRay = Ray(x - 0.5, y, atan((x - 0.5 - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
@@ -81,7 +85,7 @@ classdef Tile
                         newRays(end + 1) = rightRay;
                         newRays(end + 1) = bottomRay;
                         newRays(end + 1) = topRay;
-
+                        rayCounter = rayCounter + 5;
                     end
                 end
                 lenses_placed = lenses_placed + 1;

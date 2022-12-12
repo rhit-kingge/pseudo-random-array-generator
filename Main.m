@@ -1,30 +1,26 @@
 clc; clear all;
 
- n = 1.4926;     %Refractive index of PMMA according to refractiveindex.info
- theta = 45*pi/180;  %Output angle, technically working in reverse
- NA = n*sin(-theta);      %The numerical aperture of a PMMA lens with a 45 degree output
- D = 1.5;
- R2 = -1.055*D/(n-1);
+%Tile 3
+% n = 1.4926;     %Refractive index of PMMA according to refractiveindex.info
+% spread3 = 45*pi/180;  %Output angle, technically working in reverse
+% NA3 = n*sin(-spread3);      %The numerical aperture of a PMMA lens with a 45 degree output
+% D = 3;
+% R3 = -NA3*D/(n-1);
+
+%Tile 2
 
 
-%The process here is to create an array that represents either one tile in
-%the pattern or the whole plaque. Each square in the 2D array represents a
-%square of 0.2mm currently (easier to downgrade later if needed). The loop
-%selects a random location, checks if it can place the desired tile there,
-%places it there if it can and tries other places if it cannot. It tries to
-%place the tile until a desired number of that tile or until a set number of attempts.
-%It does this first with the largest tile, then the second largest, then it
-%fills in the rest of the gaps with the smallest tile.
+%Tile 1
 
-grid_width = 15;
-grid_height = 15;
+grid_width = 10;
+grid_height = 10;
 current_best = zeros(grid_height,grid_width);
 rays = Ray.empty;
 empty_tiles = grid_width*grid_height;
 
 tile1 = Tile(1,1,1,1,1);
 tile2 = Tile(2,2,2,2,2);
-tile3 = Tile(3,4,3,3,3);
+tile3 = Tile(3,3,45,20,3);
 target1 = round(empty_tiles/3);
 target2 = round(empty_tiles/3);
 target3 = round(empty_tiles/3);
@@ -35,6 +31,8 @@ for generated_plaques = 1:1
 
     %plaque = tile3.placelens(plaque, target3, 1000);
     [plaque, rays] = tile3.placelens(plaque, target3, 1000, rays);
+%     [plaque, rays] = tile2.placelens(plaque, target2, 1000, rays);
+%     [plaque, rays] = tile1.placelens(plaque, 1000, 1000, rays);
     %plaque = tile2.placelens(plaque, target2, 1000);
     %plaque = tile1.placelens(plaque, 175, 100000);
 
@@ -47,22 +45,16 @@ for generated_plaques = 1:1
 %     end
 
 end
+figure(1);
+clf(figure(1));
+hold on;
+imagesc(plaque);
+for n = 1:length(rays)
+    plot(rays(n).xOrigin,rays(n).yOrigin,'r*')
+end
 
-% figure()
-% imagesc(plaque);
-% hold on;
-% for n = 1:length(rays)
-%     plot(rays(n).xOrigin,rays(n).yOrigin,'r*')
-% end
-
-% figure()
-% hold on;
-% stepsize = 180/length(rays);
-% 
-% for n = 1:length(rays)
-%     plot(rays(n).xAngle,"r*")
-% end
-
+figure(2);
+clf(figure(2));
 xAngles = zeros(size(rays));
 yAngles = zeros(size(rays));
 for n = 1:length(rays)
