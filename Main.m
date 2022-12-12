@@ -1,26 +1,14 @@
 clc; clear all;
 
-%Tile 3
-% n = 1.4926;     %Refractive index of PMMA according to refractiveindex.info
-% spread3 = 45*pi/180;  %Output angle, technically working in reverse
-% NA3 = n*sin(-spread3);      %The numerical aperture of a PMMA lens with a 45 degree output
-% D = 3;
-% R3 = -NA3*D/(n-1);
-
-%Tile 2
-
-
-%Tile 1
-
-grid_width = 10;
-grid_height = 10;
+grid_width = 20;
+grid_height = 20;
 current_best = zeros(grid_height,grid_width);
 rays = Ray.empty;
 empty_tiles = grid_width*grid_height;
 
-tile1 = Tile(1,1,1,1,1);
-tile2 = Tile(2,2,2,2,2);
-tile3 = Tile(3,3,45,20,3);
+tile1 = Tile(1,1,10,1,1);
+tile2 = Tile(2,2,40,2,2);
+tile3 = Tile(3,3,55,20,3);
 target1 = round(empty_tiles/3);
 target2 = round(empty_tiles/3);
 target3 = round(empty_tiles/3);
@@ -31,10 +19,9 @@ for generated_plaques = 1:1
 
     %plaque = tile3.placelens(plaque, target3, 1000);
     [plaque, rays] = tile3.placelens(plaque, target3, 1000, rays);
-%     [plaque, rays] = tile2.placelens(plaque, target2, 1000, rays);
-%     [plaque, rays] = tile1.placelens(plaque, 1000, 1000, rays);
-    %plaque = tile2.placelens(plaque, target2, 1000);
-    %plaque = tile1.placelens(plaque, 175, 100000);
+    [plaque, rays] = tile2.placelens(plaque, target2, 1000, rays);
+    [plaque, rays] = tile1.placelens(plaque, 1000, 10000, rays);
+
 
 
     %Merit function
@@ -61,4 +48,12 @@ for n = 1:length(rays)
     xAngles(n) = rays(n).xAngle*180/pi;
     yAngles(n) = rays(n).yAngle*180/pi;
 end
+
 histogram(xAngles, 181, 'BinLimits', [-90, 90]);
+
+
+%Currently looking into fitdist, trying to fit to cos^3(theta) where theta
+%will have to be scaled to our desired spread, where the intensity equals
+%zero when theta is 90degrees.
+%Because the equation is Im*cos^3(theta*scaler)
+%modelFun = @(Im,s) 

@@ -15,10 +15,6 @@ classdef Tile
             obj.height = height;
             obj.name = name;
             obj.area = width*height;
-%             xNA = 1.4926*sin(xSpread*pi/180);
-%             yNA = 1.4926*sin(ySpread*pi/180);
-%             xR = xNA*width/(1.4926 - 1);
-%             yR = yNA*width/(1.4926 - 1);
             obj.xFocus = width/2/tan(xSpread*pi/180);
             obj.yFocus = height/2/tan(ySpread*pi/180);
         end
@@ -88,11 +84,11 @@ classdef Tile
                         rayCounter = rayCounter + 5;
                     end
                 end
-                lenses_placed = lenses_placed + 1;
-                fprintf("The total number of lenses placed currently is: " + lenses_placed + "\n")
-                fprintf("The number of rays placed for this whole lens was: " + rayCounter + "\n")
-                fprintf("The total number of rays created is: " + length(newRays) + "\n")
-                fprintf("-----------------------------------------------------------------------\n")
+%                 lenses_placed = lenses_placed + 1;
+%                 fprintf("The total number of lenses placed currently is: " + lenses_placed + "\n")
+%                 fprintf("The number of rays placed for this whole lens was: " + rayCounter + "\n")
+%                 fprintf("The total number of rays created is: " + length(newRays) + "\n")
+%                 fprintf("-----------------------------------------------------------------------\n")
                 area_placed = area_placed + this.area;
 
             end
