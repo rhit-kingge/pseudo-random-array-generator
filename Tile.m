@@ -19,11 +19,12 @@ classdef Tile
             obj.yFocus = height/2/tan(ySpread*pi/180);
         end
 
-        function [newPlaque, newRays]  = placelens(this, plaque, idealarea, maxattempts, rays)
+        function [newPlaque, newxRays, newyRays]  = placelens(this, plaque, idealarea, maxattempts, xrays, yrays)
         %setup of variables
         area_placed = 0;
         current_attempt = 0;
-        newRays = rays;
+        newxRays = xrays;
+        newyRays = yrays;
         newPlaque = plaque;
         [plaque_height, plaque_width] = size(newPlaque);
         lenses_placed = 0;
@@ -69,6 +70,10 @@ classdef Tile
                     for y = posy: posy + this.height - 1
                         newPlaque(y,x) = this.name;
                         
+%                         for xorigin = x-.5:.05:x+.5
+%                             addRay = Ray(xorigin,y, atan((xorigin - xCenter)/this.xFocus),0, [xCenter yCenter]);
+%                             newxRays(end+1) = addRay;
+%                         end
 
                         centerRay = Ray(x, y, atan((x - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
                         leftRay = Ray(x - 0.5, y, atan((x - 0.5 - xCenter)/this.xFocus), atan((y - yCenter)/this.yFocus), [xCenter yCenter]);
@@ -76,12 +81,12 @@ classdef Tile
                         bottomRay = Ray(x, y - 0.5, atan((x - xCenter)/this.xFocus), atan((y - 0.5 - yCenter)/this.yFocus), [xCenter yCenter]);
                         topRay = Ray(x, y + 0.5, atan((x - xCenter)/this.xFocus), atan((y - yCenter + 0.5)/this.yFocus), [xCenter yCenter]);
 
-                        newRays(end + 1) = centerRay;
-                        newRays(end + 1) = leftRay;
-                        newRays(end + 1) = rightRay;
-                        newRays(end + 1) = bottomRay;
-                        newRays(end + 1) = topRay;
-                        rayCounter = rayCounter + 5;
+                        newxRays(end + 1) = centerRay;
+                        newxRays(end + 1) = leftRay;
+                        newxRays(end + 1) = rightRay;
+                        newxRays(end + 1) = bottomRay;
+                        newxRays(end + 1) = topRay;
+%                         rayCounter = rayCounter + 5;
                     end
                 end
 %                 lenses_placed = lenses_placed + 1;
