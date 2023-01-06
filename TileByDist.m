@@ -47,7 +47,7 @@ classdef TileByDist
                 if ~free_space
                     continue;
                 end
-                
+
                 %Check directly around lens with buffer
                 if this.area > 1
                     for y = posy - 1:posy + this.height
@@ -61,6 +61,7 @@ classdef TileByDist
                 if ~free_space
                     continue;
                 end
+                
                 %Place lens
                 for x = posx:posx + this.width - 1
                     for y = posy: posy + this.height - 1
@@ -69,7 +70,6 @@ classdef TileByDist
                 end
                 numberPlaced = numberPlaced + 1;
                 area_placed = area_placed + this.area;
-
             end
         end
     end
