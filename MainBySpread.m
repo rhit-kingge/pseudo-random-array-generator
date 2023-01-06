@@ -1,24 +1,21 @@
 clc; clear all;
 
-grid_width = 22;
-grid_height = 22;
-current_best = zeros(grid_height,grid_width);
-plaque_area = (grid_width-2)*(grid_height-2);
+grid_width = 15;
+grid_height = 15;
+current_best = zeros(grid_height+2,grid_width+2);
+plaque_area = (grid_width)*(grid_height);
 
 tile1 = TileByDist(1,1,20,1,1);
 tile2 = TileByDist(2,2,40,2,2);
 tile3 = TileByDist(3,3,50,20,3);
-target1 = round(plaque_area/3);
-target2 = round(plaque_area/3);
-target3 = round(plaque_area/3);
 
 for generated_plaques = 1:1
-    plaque = zeros(grid_height,grid_width);
+    plaque = zeros(grid_height + 2,grid_width + 2);
 
 
-    [plaque, tile3Count] = tile3.placelens(plaque, target3, 1000);
-    [plaque, tile2Count] = tile2.placelens(plaque, target2, 1000);
-    [plaque, tile1Count] = tile1.placelens(plaque, 1000, 10000);
+    [plaque, tile3Count] = tile3.placelens(plaque, 1000);
+    [plaque, tile2Count] = tile2.placelens(plaque, 1000);
+    [plaque, tile1Count] = tile1.placelens(plaque, 10000);
     d = 20;
     x0 = d*tan(85*pi/180);
     x = -x0:.2:x0;

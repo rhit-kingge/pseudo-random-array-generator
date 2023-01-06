@@ -3,12 +3,14 @@ classdef TileByDist
     properties
         width
         height
-        xFocus
-        yFocus
         name
         area
+        %Lenses only
         xSpread
         ySpread
+        %Etched surfaces anyway
+        roughness
+
     end
 
     methods
@@ -17,19 +19,27 @@ classdef TileByDist
             obj.height = height;
             obj.name = name;
             obj.area = width*height;
-            obj.xFocus = width/2/tan(xSpread*pi/180);
-            obj.yFocus = height/2/tan(ySpread*pi/180);
             obj.xSpread = xSpread;
             obj.ySpread = ySpread;
         end
 
-        function [newPlaque, numberPlaced]  = placelens(this, plaque, idealarea, maxattempts)
+        function obj = roughSurface(width, height, roughness, name)
+            obj.width = width;
+            obj.height = height;
+            obj.name = name;
+            obj.area = width*height;
+            obj.roughness = roughness;
+        end
+
+
+        function [newPlaque, numberPlaced]  = placelens(this, plaque, maxattempts)
         %setup of variables
         area_placed = 0;
         current_attempt = 0;
         newPlaque = plaque;
         [plaque_height, plaque_width] = size(newPlaque);
         numberPlaced = 0;
+        idealarea = round((length(plaque)^2)/3);
             while area_placed < idealarea && current_attempt < maxattempts
                 current_attempt = current_attempt + 1;
                 posx = randi(plaque_width-this.width-1,1) + 1;
@@ -72,5 +82,7 @@ classdef TileByDist
                 area_placed = area_placed + this.area;
             end
         end
+        
+
     end
 end
