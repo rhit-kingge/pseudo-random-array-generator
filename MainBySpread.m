@@ -3,7 +3,7 @@ clc; clear all;
 grid_width = 16;
 grid_height = 16;
 current_best = zeros(grid_height,grid_width);
-plaque_area = (grid_width-1)*(grid_height-1);
+plaque_area = (grid_width-2)*(grid_height-2);
 
 tile1 = TileByDist(1,1,20,1,1);
 tile2 = TileByDist(2,2,40,2,2);
@@ -33,9 +33,12 @@ for generated_plaques = 1:1
     xAngOutput3 = zeros(length(x));xAngOutput2 = zeros(length(x));xAngOutput1 = zeros(length(x));
     xInAngles = atan(x/d)*180/pi;
     totalXOutput = xoutput1 + xoutput2 + xoutput3;
+    idealXOutput = zeros(length(xInAngles));
+%     idealXOutput();
 
 
 end
+
 figure(1)
 plot(xInAngles,xoutput3,xInAngles,xoutput2,xInAngles,xoutput1)
 legend("Tile 3 (largest)", "Tile 2", "Tile 1")
