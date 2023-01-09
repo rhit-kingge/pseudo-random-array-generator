@@ -5,42 +5,74 @@ classdef TileByDist
         height
         name
         area
+        elementType
+
         %Lenses only
         xSpread
         ySpread
+
         %Etched surfaces anyway
+        spread
         roughness
 
     end
 
     methods
-        function obj = TileByDist(width, height, xSpread, ySpread, name)
+
+        function obj = TileByDist(name, width, height, varargin)
             obj.width = width;
             obj.height = height;
             obj.name = name;
             obj.area = width*height;
-            obj.xSpread = xSpread;
-            obj.ySpread = ySpread;
+            
+            obj.spread = 0;
+            obj.xSpread = 0;
+            obj.ySpread = 0;
+            
+            obj.elementType = varargin{1};
+            if varargin{1} == "Lens"
+                obj.xSpread = varargin{2};
+                obj.ySpread = varargin{3};
+                obj.elementType = varargin{1};
+            end
+            if varargin{1} == "Rough Surface"
+                obj.spread = varargin{2};
+                obj.elementType = varargin{1};
+            end
+
         end
+%         function obj = LensByDist(width, height, xSpread, ySpread, name)
+%             obj.width = width;
+%             obj.height = height;
+%             obj.name = name;
+%             obj.area = width*height;
+%             obj.xSpread = xSpread;
+%             obj.ySpread = ySpread;
+%         end
+% 
+%         function obj = roughSurface(width, height, spread, name)
+%             obj.width = width;
+%             obj.height = height;
+%             obj.name = name;
+%             obj.area = width*height;
+%             obj.spread = spread;
+%         end
 
-        function obj = roughSurface(width, height, roughness, name)
-            obj.width = width;
-            obj.height = height;
-            obj.name = name;
-            obj.area = width*height;
-            obj.roughness = roughness;
-        end
 
-
-        function [newPlaque, numberPlaced]  = placelens(this, plaque, maxattempts)
+        function [newPlaque, numberPlaced]  = placeElement(this, plaque, maxattempts)
         %setup of variables
-        area_placed = 0;
-        current_attempt = 0;
         newPlaque = plaque;
         [plaque_height, plaque_width] = size(newPlaque);
+        newPlaque_area = (plaque_height - 2)*(plaque_height - 2);
+        if this.area > 1
+            idealNumber = round(newPlaque_area/3/this.area);
+        else
+            idealNumber = 1000;
+        end
+
         numberPlaced = 0;
-        idealarea = round((length(plaque)^2)/3);
-            while area_placed < idealarea && current_attempt < maxattempts
+        current_attempt = 0;
+            while numberPlaced < idealNumber && current_attempt < maxattempts
                 current_attempt = current_attempt + 1;
                 posx = randi(plaque_width-this.width-1,1) + 1;
                 posy = randi(plaque_height-this.height-1,1) + 1;
@@ -79,10 +111,8 @@ classdef TileByDist
                     end
                 end
                 numberPlaced = numberPlaced + 1;
-                area_placed = area_placed + this.area;
+
             end
         end
-        
-
     end
 end
