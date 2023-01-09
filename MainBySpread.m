@@ -6,7 +6,7 @@ current_best = zeros(grid_height+2,grid_width+2);
 plaque_area = (grid_width)*(grid_height);
 tile1 = TileByDist(1,1,1,"Lens",10,20);
 tile2 = TileByDist(2,2,2,"Lens",25,20);
-tile3 = TileByDist(3,3,3,"Lens",50,20);
+tile3 = TileByDist(3,3,3,"Rough Surface",50);
 
 
 for generated_plaques = 1:1
@@ -16,16 +16,14 @@ for generated_plaques = 1:1
     [plaque, tile3Count] = tile3.placeElement(plaque, 1000);
     [plaque, tile2Count] = tile2.placeElement(plaque, 1000);
     [plaque, tile1Count] = tile1.placeElement(plaque, 10000);
-    d = 20;
-%     x0 = d*tan(85*pi/180);
-%     x = -x0:.2:x0;
 
-    %Correction/area factor should be area the type of lens takes up over
-    %total area, so # of that tile times that tile's area over plaque area
     xInAngles = -40*pi/180:.005:40*pi/180;
-    xoutput3 = exp(-2*(tan(xInAngles)/(tile3.xSpread*pi/180/2)).^2);
-    xoutput2 = exp(-2*(tan(xInAngles)/(tile2.xSpread*pi/180/2)).^2);
-    xoutput1 = exp(-2*(tan(xInAngles)/(tile1.xSpread*pi/180/2)).^2);
+    xoutput3 = tile3Count*tile3.getDistribution(xInAngles)./plaque_area;
+    xoutput2 = tile2Count*tile2.getDistribution(xInAngles)./plaque_area;
+    xoutput1 = tile1Count*tile1.getDistribution(xInAngles)./plaque_area;
+%     xoutput3 = exp(-2*(tan(xInAngles)/(tile3.xSpread*pi/180/2)).^2);
+%     xoutput2 = exp(-2*(tan(xInAngles)/(tile2.xSpread*pi/180/2)).^2);
+%     xoutput1 = exp(-2*(tan(xInAngles)/(tile1.xSpread*pi/180/2)).^2);
 %     wx3 = d*tan(tile3.xSpread*pi/180);
 %     wx2 = d*tan(tile2.xSpread*pi/180);
 %     wx1 = d*tan(tile1.xSpread*pi/180);

@@ -13,7 +13,7 @@ classdef TileByDist
 
         %Etched surfaces anyway
         spread
-        roughness
+        %roughness
 
     end
 
@@ -41,23 +41,6 @@ classdef TileByDist
             end
 
         end
-%         function obj = LensByDist(width, height, xSpread, ySpread, name)
-%             obj.width = width;
-%             obj.height = height;
-%             obj.name = name;
-%             obj.area = width*height;
-%             obj.xSpread = xSpread;
-%             obj.ySpread = ySpread;
-%         end
-% 
-%         function obj = roughSurface(width, height, spread, name)
-%             obj.width = width;
-%             obj.height = height;
-%             obj.name = name;
-%             obj.area = width*height;
-%             obj.spread = spread;
-%         end
-
 
         function [newPlaque, numberPlaced]  = placeElement(this, plaque, maxattempts)
         %setup of variables
@@ -114,5 +97,25 @@ classdef TileByDist
 
             end
         end
+
+        function obj = getDistribution(this, angles)
+            if this.elementType == "Lens"
+                obj = this.area*exp(-2*(tan(angles)/(this.xSpread*pi/180/2)).^2);
+            end
+            if this.elementType == "Rough Surface"
+                obj = zeros(size(angles));
+                fprintf("The element is a rough surface and this part at least is running correctly")
+                roughness = 0;
+                reflectance = 0.04;
+                %I'm going to make a few minor assumptions for the moment,
+                %with respect to Reflectance and index of the material.
+                percentScatter = reflectance*(1-exp((4*pi*roughness/centerWavelength)^2));
+            end
+            if this.elementType == "Cosine Power"
+                obj = zeros(size(angles));
+            end
+        end
+
+
     end
 end
