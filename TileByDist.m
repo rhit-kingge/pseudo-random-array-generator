@@ -12,7 +12,7 @@ classdef TileByDist
         ySpread
 
         %Etched surfaces anyway
-        spread
+        scatterRatio
         %roughness
 
     end
@@ -25,7 +25,7 @@ classdef TileByDist
             obj.name = name;
             obj.area = width*height;
             
-            obj.spread = 0;
+            obj.scatterRatio = 0;
             obj.xSpread = 0;
             obj.ySpread = 0;
             
@@ -36,7 +36,7 @@ classdef TileByDist
                 obj.elementType = varargin{1};
             end
             if varargin{1} == "Rough Surface"
-                obj.spread = varargin{2};
+                obj.scatterRatio = varargin{2};
                 obj.elementType = varargin{1};
             end
 
@@ -105,11 +105,11 @@ classdef TileByDist
             if this.elementType == "Rough Surface"
                 obj = zeros(size(angles));
                 fprintf("The element is a rough surface and this part at least is running correctly")
-                roughness = 0;
+                scatter = 0;
                 reflectance = 0.04;
                 %I'm going to make a few minor assumptions for the moment,
                 %with respect to Reflectance and index of the material.
-                percentScatter = reflectance*(1-exp((4*pi*roughness/centerWavelength)^2));
+                percentScatter = reflectance*(1-exp(-(4*pi*scatter/centerWavelength)^2));
             end
             if this.elementType == "Cosine Power"
                 obj = zeros(size(angles));
