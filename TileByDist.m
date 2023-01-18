@@ -39,7 +39,6 @@ classdef TileByDist
                 obj.scatterRatio = varargin{2};
                 obj.elementType = varargin{1};
             end
-
         end
 
         function [newPlaque, numberPlaced]  = placeElement(this, plaque, maxattempts)
@@ -100,16 +99,32 @@ classdef TileByDist
 
         function obj = getDistribution(this, angles)
             if this.elementType == "Lens"
-                obj = this.area*exp(-2*(tan(angles)/(this.xSpread*pi/180/2)).^2);
+                obj = this.area*exp(-2*(tan(angles)/(2*this.xSpread*pi/180)).^2);
             end
             if this.elementType == "Rough Surface"
-                obj = zeros(size(angles));
                 fprintf("The element is a rough surface and this part at least is running correctly")
-                scatter = 0;
-                reflectance = 0.04;
+%                 scatter = 100;
+                reflectance = 0.08;
+                centerWavelength = 600;
                 %I'm going to make a few minor assumptions for the moment,
                 %with respect to Reflectance and index of the material.
-                percentScatter = reflectance*(1-exp(-(4*pi*scatter/centerWavelength)^2));
+%                 collimatedComponent = this.area*exp(-2*(tan(angles)/(5*pi/180/2)).^2);
+                percentScatter = reflectance*(1-exp(-(4*pi*this.scatterRatio/centerWavelength)^2));
+                obj = this.area*percentScatter*cos(angles) + this.area*(1-percentScatter)*exp(-2*(tan(angles)/(10*pi/180)).^2);
+%                 obj = this.area*(1-reflectance)*(1-percentScatter) + percentScatter.*cos(angles);
+
+                %Thought process: The beam of light through a glass plate
+                %is the incoming intensity times (one minus the surface
+                %reflectance) squared. The second surface reflection is
+                %what we care about, but it wont be reflected it will be
+                %scattered. The scattered light will follow cos(theta) with
+                %normal again being zero, and the rest of the light will
+                %just continue straight. According to TISbp -total
+                %integrated scatter- = R0*(1-e^(-(4pi*Rqcos(theta)^2)). Rq
+                %is rms surface roughness, theta is incident angle, and
+                %lambda is the central wavelength. The output is then
+                %I*.96*1-TIS + TIS*cos(theta)
+
             end
             if this.elementType == "Cosine Power"
                 obj = zeros(size(angles));
