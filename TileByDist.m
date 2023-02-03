@@ -102,7 +102,7 @@ classdef TileByDist
                 obj = this.area*exp(-2*(tan(angles)/(2*this.xSpread*pi/180)).^2);
             end
             if this.elementType == "Rough Surface"
-                fprintf("The element is a rough surface and this part at least is running correctly")
+%                 fprintf("The element is a rough surface and this part at least is running correctly")
 %                 scatter = 100;
                 reflectance = 0.08;
                 centerWavelength = 600;

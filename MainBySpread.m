@@ -1,6 +1,6 @@
 clc; clear all;
 
-grid_width = 20;
+grid_width = 25;
 grid_height = 25;
 current_best = zeros(grid_height+2,grid_width+2);
 plaque_area = (grid_width)*(grid_height);
