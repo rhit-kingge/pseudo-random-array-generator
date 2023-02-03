@@ -6,6 +6,7 @@ classdef TileByDist
         name
         area
         elementType
+        rotatable
 
         %Lenses only
         xSpread
@@ -19,11 +20,12 @@ classdef TileByDist
 
     methods
 
-        function obj = TileByDist(name, width, height, varargin)
+        function obj = TileByDist(name, rotatable, width, height, varargin)
             obj.width = width;
             obj.height = height;
             obj.name = name;
             obj.area = width*height;
+            obj.rotatable = rotatable;
             
             obj.scatterRatio = 0;
             obj.xSpread = 0;
@@ -45,24 +47,37 @@ classdef TileByDist
         %setup of variables
         newPlaque = plaque;
         [plaque_height, plaque_width] = size(newPlaque);
-        newPlaque_area = (plaque_height - 2)*(plaque_height - 2);
-        if this.area > 1
-            idealNumber = round(newPlaque_area/3/this.area);
-        else
-            idealNumber = 1000;
-        end
+        newPlaque_area = (plaque_height-2)*(plaque_height-2);
+        idealNumber = round(newPlaque_area/4/this.area);
+%         if this.area > 1
+%             idealNumber = round(newPlaque_area/3/this.area);
+%         else
+%             idealNumber = 100000;
+%         end
 
         numberPlaced = 0;
         current_attempt = 0;
             while numberPlaced < idealNumber && current_attempt < maxattempts
+
+                xspan = this.width;
+                yspan = this.height;
+                if this.rotatable
+                    if randi(2,1) == 2
+                        xspan = this.height;
+                        yspan = this.width;
+                    end
+                end
+
                 current_attempt = current_attempt + 1;
-                posx = randi(plaque_width-this.width-1,1) + 1;
-                posy = randi(plaque_height-this.height-1,1) + 1;
+                posx = randi(plaque_width-xspan-1,1) + 1;
+                posy = randi(plaque_height-yspan-1,1) + 1;
                 free_space = true;
+                
+                
 
                 %Check the area is empty
-                for x = posx:posx + this.width - 1
-                    for y = posy: posy + this.height - 1
+                for x = posx:posx + xspan - 1
+                    for y = posy: posy + yspan - 1
                         if newPlaque(y,x) ~= 0
                             free_space = false;
                         end
@@ -72,10 +87,10 @@ classdef TileByDist
                     continue;
                 end
 
-                %Check directly around lens with buffer
+                %buffer
                 if this.area > 1
-                    for y = posy - 1:posy + this.height
-                        for x = posx - 1:posx + this.width
+                    for y = posy - 1:posy + yspan
+                        for x = posx - 1:posx + xspan
                             if newPlaque(y,x) == this.name
                                 free_space = false;
                             end
@@ -87,8 +102,8 @@ classdef TileByDist
                 end
                 
                 %Place lens
-                for x = posx:posx + this.width - 1
-                    for y = posy: posy + this.height - 1
+                for x = posx:posx + xspan - 1
+                    for y = posy: posy + yspan - 1
                         newPlaque(y,x) = this.name;
                     end
                 end
@@ -97,12 +112,15 @@ classdef TileByDist
             end
         end
 
+
+
+
+
         function obj = getDistribution(this, angles)
             if this.elementType == "Lens"
                 obj = this.area*exp(-2*(tan(angles)/(2*this.xSpread*pi/180)).^2);
             end
             if this.elementType == "Rough Surface"
-%                 fprintf("The element is a rough surface and this part at least is running correctly")
 %                 scatter = 100;
                 reflectance = 0.08;
                 centerWavelength = 600;
